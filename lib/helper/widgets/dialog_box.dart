@@ -3,7 +3,9 @@
 import 'package:apl_admin/helper/widgets/form.dart';
 import 'package:apl_admin/requests/goals.dart';
 import 'package:apl_admin/requests/match_event.dart';
+import 'package:apl_admin/requests/players.dart';
 import 'package:apl_admin/requests/standings.dart';
+import 'package:apl_admin/requests/teams.dart';
 import 'package:flutter/material.dart';
 
 import 'text.dart';
@@ -532,6 +534,135 @@ class AddStandingsDialogBoxState extends State <AddStandingsDialogBox> {
                   widget.selectedSeasonId
                 );
               }
+ 
+              if (!mounted) return; 
+
+              if (response['status']) {
+                showDialog(
+                  context: context, 
+                  builder: (BuildContext context) {
+                    return MessageDialogBox(
+                      message: response['message'],
+                      title: 'Success', 
+                      onOk: () {
+                        Navigator.of(context).pop();
+                      }
+                    );
+                  }
+                );
+              }
+              else {
+                showDialog(
+                  context: context, 
+                  builder: (BuildContext context) {
+                    return MessageDialogBox(
+                      message: response['message'],
+                      title: 'Error', 
+                      onOk: () {
+                        Navigator.of(context).pop();
+                      }
+                    );
+                  }
+                );
+              }
+            }
+          },
+          child: RegularText(
+            text: "OK",
+          ),
+        ),
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: RegularText(
+            text: "Cancel",
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+
+/// This dialog box contains a form for creating a goal.
+class TransfersDialogBox extends StatefulWidget {
+
+  final Map<String, dynamic> player;
+  int selectedTeamId;
+  List<Map<String, dynamic>> teams;
+
+  TransfersDialogBox(
+    {
+      super.key, 
+      required this.player,
+      this.selectedTeamId = 0,
+      this.teams = const [],
+    }
+  );
+
+  @override
+  TransfersDialogBoxState createState() => TransfersDialogBoxState();
+}
+
+class TransfersDialogBoxState extends State <TransfersDialogBox> {
+
+  @override
+  void initState() {
+    super.initState();
+    getTeams().then((teams) {
+      setState(() {
+        widget.teams = teams;
+      });
+    });
+  }
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const HeaderText(
+        text: "Transfer",
+      ),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+
+            if (widget.teams.isNotEmpty)
+              AppDropDownButton(
+                items: widget.teams
+                  .where((team) => team['name'] != widget.player['team']['name'])
+                  .map((team) => "${team['name']}")
+                  .toList(),
+                hintText: "Which team is the player moving to?",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a team';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    widget.selectedTeamId = widget.teams.firstWhere((team) => "${team['name']}}" == value)['id'];
+                  });
+                },
+              ),
+            
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () async {
+
+            if (_formKey.currentState!.validate()) {
+
+              Map<String, dynamic> response = await transferPlayer(
+                widget.player['team']['id'], 
+                widget.player['id']
+              );
  
               if (!mounted) return; 
 

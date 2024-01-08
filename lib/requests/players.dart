@@ -131,3 +131,15 @@ Future<List<Map<String,dynamic>>> getPositions () async {
     );
     
 }
+
+Future<Map<String, dynamic>> transferPlayer (toTeamId, playerId) async {
+
+  return postData(
+    '${_path}transfer/create/',
+    jsonEncode(<String, String> {
+      'to_team': toTeamId.toString(),
+      'player': playerId.toString(),
+    })
+  );
+
+}

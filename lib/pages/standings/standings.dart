@@ -231,7 +231,7 @@ class MensStandingsState extends State<MensStandings> {
           ),
 
           SubmitFormButton(
-            text: "Submit",
+            text: "Create Standings",
             onPressed: () {
               showDialog(
                 context: context, 
@@ -342,8 +342,7 @@ class WomensStandingsState extends State<WomensStandings> {
                     ),
                   ]
                 );
-                  
-                
+                    
 
               },
               errorText: "standings",
@@ -352,7 +351,7 @@ class WomensStandingsState extends State<WomensStandings> {
           ),
 
           SubmitFormButton(
-            text: "Submit",
+            text: "Create Standings",
             onPressed: () {
               showDialog(
                 context: context, 
@@ -363,7 +362,9 @@ class WomensStandingsState extends State<WomensStandings> {
                 }
               );
             }
-          )
+          ),
+
+
                 
       ]
       

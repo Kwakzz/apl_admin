@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 import 'package:apl_admin/helper/functions/date_time.dart';
 import 'package:apl_admin/helper/functions/image.dart';
+import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/text.dart';
 import 'package:apl_admin/pages/matches/match.dart';
 import 'package:apl_admin/pages/matches/matches.dart';
@@ -110,13 +111,28 @@ class PlayerTile extends StatelessWidget {
                 value: "edit",
                 child: RegularText(text: "Edit"),
               ),
+              PopupMenuItem(
+                value: "transfer",
+                child: RegularText(text: "Transfer"),
+              )
             ];
           },
           onSelected: (value) {
             switch (value) {
               case "edit":
                 break;
-              default:
+
+              case "transfer":
+                showDialog(
+                  context: context, 
+                  builder: (BuildContext context) {
+                    return TransfersDialogBox(
+                      player: player
+                    );
+                  }
+                );
+
+              default: break;
             }
           },
         ),
