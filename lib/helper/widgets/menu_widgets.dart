@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 import 'package:apl_admin/helper/functions/date_time.dart';
-import 'package:apl_admin/helper/functions/image.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/text.dart';
 import 'package:apl_admin/pages/matches/match.dart';
@@ -639,7 +638,7 @@ class NewsTile extends StatelessWidget{
           child: Row(
             children: [
               Image.network(
-                extractImageUrl(news['featured_image']),
+                news['featured_image'],
                 width: 100,
                 height:110,
                 fit: BoxFit.cover,
@@ -708,7 +707,7 @@ class NewsItem extends StatelessWidget {
     return ListView(
       children: [
         Image.network(
-          extractImageUrl(news['featured_image']),
+          news['featured_image'],
           fit: BoxFit.cover,
         ),
         const SizedBox(height: 20),
