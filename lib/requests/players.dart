@@ -13,6 +13,7 @@ String _path = '/player/';
 Future<Map<String, dynamic>> createPlayerWithoutImage(
   String firstName,
   String lastName,
+  String birthDate,
   String yearGroup,
   String major,
   String gender,
@@ -25,6 +26,7 @@ Future<Map<String, dynamic>> createPlayerWithoutImage(
     jsonEncode(<String, String> {
       'first_name': firstName,
       'last_name': lastName,
+      'birth_date': birthDate,
       'year_group': yearGroup,
       'major': major,
       'gender': gender,
@@ -39,6 +41,7 @@ Future<Map<String, dynamic>> createPlayerWithoutImage(
 Future<Map<String, dynamic>> createPlayerWithImage(
   String firstName,
   String lastName,
+  String birthDate,
   String yearGroup,
   String major,
   String gender,
@@ -58,6 +61,7 @@ Future<Map<String, dynamic>> createPlayerWithImage(
 
     request.fields['first_name'] = firstName;
     request.fields['last_name'] = lastName;
+    request.fields['birth_date'] = birthDate;
     request.fields['year_group'] = yearGroup;
     request.fields['major'] = major;
     request.fields['gender'] = gender;

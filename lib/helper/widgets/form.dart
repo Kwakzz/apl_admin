@@ -138,7 +138,7 @@ class SubmitFormButton extends StatelessWidget {
     return Center (
       child: Container(
         margin: const EdgeInsets.only(top: 6, bottom: 6),
-        width: MediaQuery.of(context).size.width * 0.3,
+        width: MediaQuery.of(context).size.width * 0.4,
         height: 50,
         child: ElevatedButton(
           onPressed: onPressed,
@@ -150,7 +150,7 @@ class SubmitFormButton extends StatelessWidget {
             style: GoogleFonts.roboto(
               fontSize: 12,
               color: Colors.white,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -159,167 +159,6 @@ class SubmitFormButton extends StatelessWidget {
   }
 }
 
-
-class SubmitWithFormKey extends StatefulWidget {
-
-  const SubmitWithFormKey({
-    super.key, 
-    required this.buttonText,
-    required this.request,
-    required this.formKey,
-    required this.positiveResponseReaction
-  });
-
-  final String buttonText;
-  final Future<Map<String, dynamic>> request;
-  final GlobalKey<FormState> formKey;
-  final void Function() positiveResponseReaction;
-
-  @override
-  SubmitWithFormKeyState createState() => SubmitWithFormKeyState();
-  
-
-}
-
-
-class SubmitWithFormKeyState extends State <SubmitWithFormKey> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (BuildContext context) {
-
-        return SubmitFormButton(
-
-          text: widget.buttonText,
-          onPressed: () async {
-
-            if (widget.formKey.currentState!.validate()) {
-              
-              Map<String, dynamic> response = await widget.request;
-
-              if (!mounted) return;
-
-              if (response['status']) {
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: const Duration(seconds: 3),
-                    content: RegularText(
-                      text: "Success! Please wait...",
-                      color: Colors.white,
-                    ),
-                    backgroundColor: Colors.black87,
-                  )
-                );
-
-                // Wait for 3 seconds
-                await Future.delayed(const Duration(seconds: 3));
-
-                widget.positiveResponseReaction();
-
-              }
-
-              else {
-                  
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(                           
-                    content: RegularText(
-                      text: response['message'],
-                      color: Colors.white,
-                    ),      
-                    backgroundColor: Colors.black54,
-                  )
-                );
-                
-              }
-            }
-            
-          },
-        );
-      },
-    );
-
-  }
-
-}
-
-class SubmitWithoutFormKey extends StatefulWidget {
-
-  const SubmitWithoutFormKey({
-    super.key, 
-    required this.buttonText,
-    required this.request,
-    required this.positiveResponseReaction
-  });
-
-  final String buttonText;
-  final Future<Map<String, dynamic>> request;
-  final void Function() positiveResponseReaction;
-
-  @override
-  SubmitWithoutFormKeyState createState() => SubmitWithoutFormKeyState();
-  
-}
-
-class SubmitWithoutFormKeyState extends State <SubmitWithoutFormKey> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-
-      builder: (BuildContext context) {
-
-        return SubmitFormButton(
-
-          text:  widget.buttonText,
-          onPressed: () async {
-
-            Map<String, dynamic> response = await widget.request;
-
-            if (!mounted) return;
-
-            if (response['status']) {
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 3),
-                  content: RegularText(
-                    text: "Success! Please wait...",
-                    color: Colors.white,
-                  ),
-                  backgroundColor: Colors.black87,
-                )
-              );
-
-              // Wait for 4 seconds
-              await Future.delayed(const Duration(seconds: 3));
-
-              widget.positiveResponseReaction();
-
-            }
-
-            else {
-                
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(                           
-                  content: RegularText(
-                    text: response['message'],
-                    color: Colors.white,
-                  ),      
-                  backgroundColor: Colors.black54,
-                )
-              );
-              
-            }
-            
-          },
-        );
-      },
-    );
-
-  }
-}
 
 
 class AppDropDownButton extends StatelessWidget {

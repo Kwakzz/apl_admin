@@ -5,6 +5,7 @@ import 'package:apl_admin/helper/widgets/text.dart';
 import 'package:apl_admin/pages/matches/match.dart';
 import 'package:apl_admin/pages/matches/matches.dart';
 import 'package:apl_admin/pages/news/view_news.dart';
+import 'package:apl_admin/requests/standings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -276,7 +277,7 @@ class MatchDayTile extends StatelessWidget {
 }
 
 /// This widget is used to create a list tile for the standings list.
-class StandingsTile extends StatelessWidget {
+class StandingsTile extends StatefulWidget {
 
   /// This widget is used to create a list tile for the standings list.
   StandingsTile(
@@ -289,12 +290,21 @@ class StandingsTile extends StatelessWidget {
   Map<String, dynamic> standings;
 
   @override
+  StandingsTileState createState() => StandingsTileState();
+
+}
+
+/// This widget is used to create a list tile for the standings list.
+class StandingsTileState extends State<StandingsTile> {
+
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
       child: ListTile(
         title: Text(
-          "${standings['competition']['name']} ${standings['name']} (${standings['competition']['gender']})",
+          "${widget.standings['competition']['name']} ${widget.standings['name']} (${widget.standings['competition']['gender']})",
           style: GoogleFonts.roboto(
             fontSize: 13,
             fontWeight: FontWeight.w400,
@@ -305,15 +315,56 @@ class StandingsTile extends StatelessWidget {
           itemBuilder: (BuildContext context) {
             return [
               PopupMenuItem(
-                value: "edit",
-                child: RegularText(text: "Edit"),
+                value: "delete",
+                child: RegularText(text: "Delete"),
               ),
             ];
           },
           onSelected: (value) {
             switch (value) {
-              case "edit":
-                break;
+              case "delete":
+                showDialog(
+                  context: context, 
+                  builder: (BuildContext context) {
+                    return ConfirmDialogBox(
+                      title: "Delete Standings",
+                      message: "Are you sure you want to delete this standings?",
+                      onOk: () async {
+                        Map <String, dynamic> response = await deleteStandings(widget.standings['id']);
+
+                        if (!mounted) return;
+
+                        if (response['status']) {
+                          showDialog(
+                            context: context, 
+                            builder: (BuildContext context) {
+                              return MessageDialogBox(
+                                message: response['message'],
+                                title: 'Success', 
+                                onOk: () {
+                                }
+                              );
+                            }
+                          );
+                        }
+
+                        else {
+                          showDialog(
+                            context: context, 
+                            builder: (BuildContext context) {
+                              return MessageDialogBox(
+                                message: response['message'],
+                                title: 'Error', 
+                                onOk: () {
+                                }
+                              );
+                            }
+                          );
+                        }
+                      },
+                    );
+                  }
+                );
               default:
             }
           },
@@ -781,7 +832,7 @@ class ListViewHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -54,7 +54,7 @@ class HomeState extends State<Home> {
           return const News(); 
 
         case 'Standings':
-          return const StandingsEntry();
+          return const Standings();
 
         default:
           return const Text('No content available');

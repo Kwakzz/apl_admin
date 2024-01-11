@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 import 'api_uri.dart';
 
 
@@ -9,8 +9,8 @@ Future<Map<String, dynamic>> update(String path, String body) async {
 
   try {
 
-    final response = await http.patch(
-      Uri.http(domain, path),
+    final response = await https.patch(
+      Uri.https(domain, path),
       headers: <String, String> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

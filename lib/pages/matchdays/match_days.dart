@@ -32,7 +32,7 @@ class MatchdaysState extends State<Matchdays> {
           ),
 
           ListViewHeading(
-            heading: "${widget.season['name']} Matchdays", 
+            heading: "${widget.season['name']}", 
             buttonText: "Add Matchday", 
             onPressed: () {
               Navigator.push(
@@ -48,7 +48,7 @@ class MatchdaysState extends State<Matchdays> {
 
           const LeftAlignedText(
             text: SubHeaderText(
-              text: "Tap a matchday's tile to view the fixtures for that matchday.",
+              text: "Tap a matchday's tile to view its fixtures.",
               color: Colors.black54,
             )
           ),

@@ -189,6 +189,7 @@ class MatchState extends State<Match> {
                               players: _homePlayers,
                               match: widget.match,
                               minuteController: _minuteController,
+                              team: widget.match['home_team'],
                             );
                           }
                         );
@@ -205,6 +206,7 @@ class MatchState extends State<Match> {
                               players: _awayPlayers,
                               match: widget.match,
                               minuteController: _minuteController,
+                              team: widget.match['away_team'],
                             );
                           }
                         );

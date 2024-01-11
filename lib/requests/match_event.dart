@@ -33,7 +33,7 @@ Future<List<Map<String,dynamic>>> getMatchEventsByTeam (int matchId, int teamId)
 
 
 /// This function sends a POST request to the server to create a booking
-Future<Map<String,dynamic>> createBooking (int matchId, int playerId, int minute, String cardType) async {
+Future<Map<String,dynamic>> createBooking (int matchId, int playerId, int teamId, int minute, String cardType) async {
 
   String eventUrlComponent = "";
 
@@ -50,6 +50,7 @@ Future<Map<String,dynamic>> createBooking (int matchId, int playerId, int minute
       {
         'match': matchId.toString(),
         'player': playerId.toString(),
+        'team': teamId.toString(),
         'minute': minute,
         'event_type': cardType,
       }

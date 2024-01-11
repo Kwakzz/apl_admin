@@ -282,11 +282,13 @@ class BookingDialogBox extends StatefulWidget {
   int selectedPlayerId;
   TextEditingController minuteController;
   String selectedCardType;
+  final Map<String, dynamic> team;
 
   BookingDialogBox(
     {
       super.key, 
       required this.players,
+      required this.team,
       required this.match,
       this.selectedPlayerId = 0,
       required this.minuteController,
@@ -378,6 +380,7 @@ class BookingDialogBoxState extends State <BookingDialogBox> {
               Map<String, dynamic> response = await createBooking(
                 widget.match['id'], 
                 widget.selectedPlayerId, 
+                widget.team['id'],
                 int.parse(widget.minuteController.text),
                 widget.selectedCardType
               );
@@ -478,8 +481,9 @@ class AddStandingsDialogBoxState extends State <AddStandingsDialogBox> {
               },
               onChanged: (value) {
                 setState(() {
-                  widget.selectedSeasonId = widget.seasons.firstWhere((season) => "${season['name']}}" == value)['id'];
+                  widget.selectedSeasonId = widget.seasons.firstWhere((season) => "${season['name']}" == value)['id'];
                 });
+                print(widget.selectedSeasonId);
               },
             ),
 
@@ -521,12 +525,14 @@ class AddStandingsDialogBoxState extends State <AddStandingsDialogBox> {
                 response = await createMensLeagueStandings(
                   widget.selectedSeasonId
                 );
+                print(response);
               }
 
               if (widget.selectedCompetition == "Men's FA Cup") {
                 response = await createMensFACupStandings(
                   widget.selectedSeasonId
                 );
+                print (widget.selectedSeasonId);
               }
 
               if (widget.selectedCompetition == "Women's Premier League") {

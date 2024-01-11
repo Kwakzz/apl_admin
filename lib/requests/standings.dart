@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:apl_admin/requests/delete.dart';
 import 'package:apl_admin/requests/post.dart';
 
 import 'get.dart';
@@ -101,3 +102,9 @@ Future<dynamic> getMensLatestStandings () async{
 }
 
 
+Future<Map<String,dynamic>> deleteStandings (int standingsId) async{
+
+  return delete(
+    '${_path}delete/$standingsId/',
+  );
+}

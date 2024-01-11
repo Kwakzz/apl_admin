@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:apl_admin/helper/functions/string.dart';
+import 'package:apl_admin/helper/functions/validate.dart';
 import 'package:apl_admin/helper/widgets/app_bar.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/form.dart';
@@ -8,6 +9,7 @@ import 'package:apl_admin/requests/players.dart';
 import 'package:apl_admin/requests/teams.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CreatePlayer extends StatefulWidget {
 
@@ -30,6 +32,8 @@ class CreatePlayerState extends State<CreatePlayer> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _yearGroupController = TextEditingController();
+  final TextEditingController _birthDateController = TextEditingController();
+  DateTime? _birthDate;
   String _selectedMajor= '';
 
   List<Map<String, dynamic>> positions = [];
@@ -49,11 +53,30 @@ class CreatePlayerState extends State<CreatePlayer> {
     }
   }
 
+  /// This function shows a date picker when the user taps on the date of birth field.
+  /// It updates the field with the selected date.
+  Future<void> _selectDate(BuildContext context, DateTime? date, TextEditingController dateController) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1980),
+      lastDate: DateTime.now().add(const Duration(days: 365))
+    );
+    
+    if (pickedDate != null && pickedDate != date) {
+      setState(() {
+        date = pickedDate;
+        dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+      });
+    }
+  }
+
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _birthDateController.dispose();
     _yearGroupController.dispose();
     super.dispose();
   }
@@ -109,7 +132,7 @@ class CreatePlayerState extends State<CreatePlayer> {
                     return "Please enter a first name";
                   }
                   // check if name contains only alphabets
-                  if (!hasOnlyAlphabets(value)) {
+                  if (!hasOnlyAlphabetsAndSpaces(value)) {
                     return "Please enter a valid first name";
                   }
                   return null;
@@ -124,7 +147,7 @@ class CreatePlayerState extends State<CreatePlayer> {
                     return "Please enter a last name";
                   }
                   // check if name contains only alphabets
-                  if (!hasOnlyAlphabets(value)) {
+                  if (!hasOnlyAlphabetsAndSpaces(value)) {
                     return "Please enter a valid last name";
                   }
                   return null;
@@ -141,6 +164,24 @@ class CreatePlayerState extends State<CreatePlayer> {
                   }
                   if (int.tryParse(value) == null) {
                     return "Please enter a valid year group";
+                  }
+                  return null;
+                },
+              ),
+
+              AppFormField(
+                controller: _birthDateController,
+                hintText: "Select Birth Date",
+                keyboardType: TextInputType.datetime,
+                onTap: () {
+                  _selectDate(context, _birthDate, _birthDateController);
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a birth date';
+                  }
+                  if (!validateDate(value)) {
+                    return "Please enter a valid birth date";
                   }
                   return null;
                 },
@@ -225,6 +266,7 @@ class CreatePlayerState extends State<CreatePlayer> {
                       response = await createPlayerWithoutImage(
                         _firstNameController.text,
                         _lastNameController.text,
+                        _birthDateController.text,
                         _yearGroupController.text,
                         _selectedMajor,
                         _selectedGender,
@@ -237,6 +279,7 @@ class CreatePlayerState extends State<CreatePlayer> {
                       response = await createPlayerWithImage(
                         _firstNameController.text,
                         _lastNameController.text,
+                        _birthDateController.text,
                         _yearGroupController.text,
                         _selectedMajor,
                         _selectedGender,
