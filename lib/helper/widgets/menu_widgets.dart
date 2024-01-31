@@ -5,6 +5,9 @@ import 'package:apl_admin/helper/widgets/text.dart';
 import 'package:apl_admin/pages/matches/match.dart';
 import 'package:apl_admin/pages/matches/matches.dart';
 import 'package:apl_admin/pages/news/view_news.dart';
+import 'package:apl_admin/pages/players/edit_player.dart';
+import 'package:apl_admin/pages/standings/standings.dart';
+import 'package:apl_admin/requests/match_event.dart';
 import 'package:apl_admin/requests/standings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -120,7 +123,14 @@ class PlayerTile extends StatelessWidget {
           onSelected: (value) {
             switch (value) {
               case "edit":
-                break;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditPlayer(
+                      player: player
+                    )
+                  ),
+                );
 
               case "transfer":
                 showDialog(
@@ -276,6 +286,361 @@ class MatchDayTile extends StatelessWidget {
   }
 }
 
+/// This widget is used to create a list tile for match events.
+class MatchEventTile extends StatefulWidget {
+
+  /// This widget is used to create a list tile for match events.
+  MatchEventTile(
+    {
+      super.key, 
+      required this.matchEvent,
+    }
+  );
+
+  Map<String, dynamic> matchEvent;
+
+  @override
+  MatchEventTileState createState() => MatchEventTileState();
+
+}
+
+/// This widget is used to create a list tile for match events.
+class MatchEventTileState extends State<MatchEventTile> {
+
+  /// This widget is used to create a list tile for match events.
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 15),
+      child: ListTile(
+        title: Text(
+          widget.matchEvent["event_type"],
+          style: GoogleFonts.roboto(
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
+          ),
+        ),
+        subtitle: Text(
+          "${widget.matchEvent['player']['first_name']} ${widget.matchEvent['player']['last_name']}",
+          style: GoogleFonts.roboto(
+            fontSize: 11,
+            fontWeight: FontWeight.w400,
+            color: Colors.black87,
+          ),
+        ),
+        leading: Text(
+          "${widget.matchEvent['minute']}'",
+          style: GoogleFonts.roboto(
+            fontSize: 11,
+            fontWeight: FontWeight.w400,
+            color: Colors.black87,
+          ),
+        ),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            showDialog(
+              context: context, 
+              builder: (BuildContext context) {
+                return ConfirmDialogBox(
+                  title: "Delete Match Event",
+                  message: "Are you sure you want to delete this match event?",
+                  onOk: () async {
+                    Map <String, dynamic> response = await deleteMatchEvent(widget.matchEvent['id']);
+
+                    if (!mounted) return;
+
+                    if (response['status']) {
+                      showDialog(
+                        context: context, 
+                        builder: (BuildContext context) {
+                          return MessageDialogBox(
+                            message: response['message'],
+                            title: 'Success', 
+                            onOk: () {
+                              setState(() {
+                                
+                              });
+                            }
+                          );
+                        }
+                      );
+                    }
+
+                    else {
+                      showDialog(
+                        context: context, 
+                        builder: (BuildContext context) {
+                          return MessageDialogBox(
+                            message: response['message'],
+                            title: 'Error', 
+                            onOk: () {
+                            }
+                          );
+                        }
+                      );
+                    }
+                  },
+                );
+              }
+            );
+          },
+        )
+
+      )
+    );
+  }
+}
+
+class StandingsTable extends StatelessWidget {
+
+  const StandingsTable(
+    {
+      super.key,
+      required this.standingsTeams,
+    }
+  );
+
+  final List<dynamic> standingsTeams;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: MediaQuery.of(context).size.width*0.04,
+        dividerThickness: 0.4,
+        columns: const <DataColumn>[
+
+          // pos
+          DataColumn(
+            label: HeaderText(
+              text: 'Pos',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // name
+          DataColumn(
+            label: HeaderText(
+              text: 'Club',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // played
+          DataColumn(
+            label: HeaderText(
+              text: 'PL',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // wins
+          DataColumn(
+            label: HeaderText(
+              text: 'W',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // draws      
+          DataColumn(
+            label: HeaderText(
+              text: 'D',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // losses      
+          DataColumn(
+            label: HeaderText(
+              text: 'L',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // goal scored      
+          DataColumn(
+            label: HeaderText(
+              text: 'GS',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // goal conceded      
+          DataColumn(
+            label: HeaderText(
+              text: 'GC',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          // goal difference
+
+          DataColumn(
+            label: HeaderText(
+              text: 'GD',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+
+          // points      
+          DataColumn(
+            label: HeaderText(
+              text: 'PTS',
+              color: Color.fromARGB(255, 53, 52, 52),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+
+        rows: standingsTeams.map((standingsTeam) => DataRow(
+            cells: [
+
+              // pos
+              DataCell(
+                HeaderText(
+                  // index + 1 because index starts at 0
+                  text: (standingsTeams.indexOf(standingsTeam) + 1).toString(),
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+
+              // name
+              DataCell(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  
+                  children: [
+                    Image.network(
+                      standingsTeam['team']['logo_url'],
+                      width: 20,
+                      height: 20,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const Icon(Icons.error, color: Colors.white,);
+                      }
+                    ),
+
+                    const Text("  "),
+                    HeaderText(
+                      text: standingsTeam['team']['name_abbreviation'],
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ]
+
+                )
+              ),
+
+              // no_played
+              DataCell(
+                HeaderText(
+                  text:standingsTeam['matches_played'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+
+              // goals
+              DataCell(
+                HeaderText(
+                  text: standingsTeam['matches_won'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              DataCell(
+                HeaderText(
+                  text: standingsTeam['matches_drawn'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              DataCell(
+                HeaderText(
+                  text: standingsTeam['matches_lost'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              DataCell(
+                HeaderText(
+                  text: standingsTeam['goals_for'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              DataCell(
+                HeaderText(
+                  text: standingsTeam['goals_against'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              DataCell(
+                HeaderText(
+                  text: standingsTeam['goal_difference'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              DataCell(
+                HeaderText(
+                  text: standingsTeam['points'].toString(),
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          )
+        ).toList(),
+      )
+    );
+  }
+  
+}
+
 /// This widget is used to create a list tile for the standings list.
 class StandingsTile extends StatefulWidget {
 
@@ -311,6 +676,15 @@ class StandingsTileState extends State<StandingsTile> {
             color: Colors.black,
           ),
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewStandings(
+                standings: widget.standings
+              )
+            ),
+          );
+        },
         trailing: PopupMenuButton(
           itemBuilder: (BuildContext context) {
             return [
@@ -369,9 +743,6 @@ class StandingsTileState extends State<StandingsTile> {
             }
           },
         ),
-        onTap: () {
-          
-        }
       )
     );
   }
@@ -856,252 +1227,3 @@ class ListViewHeading extends StatelessWidget {
 
 }
 
-/// This displays the standings for a competition
-class StandingsTable extends StatelessWidget {
-
-  const StandingsTable(
-    {
-      super.key,
-      required this.standingsTeams,
-    }
-  );
-
-  final List<dynamic> standingsTeams;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columnSpacing: MediaQuery.of(context).size.width*0.06,
-          dividerThickness: 0.3,
-          columns: const <DataColumn>[
-
-            // pos
-            DataColumn(
-              label: HeaderText(
-                text: 'Pos',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // name
-            DataColumn(
-              label: HeaderText(
-                text: 'Club',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // played
-            DataColumn(
-              label: HeaderText(
-                text: 'PL',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // wins
-            DataColumn(
-              label: HeaderText(
-                text: 'W',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // draws      
-            DataColumn(
-              label: HeaderText(
-                text: 'D',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // losses      
-            DataColumn(
-              label: HeaderText(
-                text: 'L',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // goal scored      
-            DataColumn(
-              label: HeaderText(
-                text: 'GS',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // goal conceded      
-            DataColumn(
-              label: HeaderText(
-                text: 'GC',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            // goal difference
-
-            DataColumn(
-              label: HeaderText(
-                text: 'GD',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-
-            // points      
-            DataColumn(
-              label: HeaderText(
-                text: 'PTS',
-                color: Color.fromARGB(255, 53, 52, 52),
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-
-          rows: standingsTeams.map((standingsTeam) => DataRow(
-              cells: [
-
-                // pos
-                DataCell(
-                  HeaderText(
-                    // index + 1 because index starts at 0
-                    text: (standingsTeams.indexOf(standingsTeam) + 1).toString(),
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-
-                // name
-                DataCell(
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    
-                    children: [
-                      Image.network(
-                        standingsTeam['team']['logo_url'],
-                        width: 20,
-                        height: 20,
-                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                          return const Icon(Icons.error, color: Colors.white,);
-                        }
-                      ),
-
-                      const Text("  "),
-                      HeaderText(
-                        text: standingsTeam['team']['name_abbreviation'],
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ]
-
-                  )
-                ),
-
-                // no_played
-                DataCell(
-                  HeaderText(
-                    text:standingsTeam['matches_played'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-
-
-                // goals
-                DataCell(
-                  HeaderText(
-                    text: standingsTeam['matches_won'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-
-                DataCell(
-                  HeaderText(
-                    text: standingsTeam['matches_drawn'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-
-                DataCell(
-                  HeaderText(
-                    text: standingsTeam['matches_lost'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-
-                DataCell(
-                  HeaderText(
-                    text: standingsTeam['goals_for'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-
-                DataCell(
-                  HeaderText(
-                    text: standingsTeam['goals_against'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-
-                DataCell(
-                  HeaderText(
-                    text: standingsTeam['goal_difference'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-
-                DataCell(
-                  HeaderText(
-                    text: standingsTeam['points'].toString(),
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            )
-          ).toList(),
-        )
-      )
-    );
-  }
-  
-}

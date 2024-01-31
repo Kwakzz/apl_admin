@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:apl_admin/requests/post.dart';
 
+import 'delete.dart';
 import 'get.dart';
 
 String _path = '/goal/';
@@ -54,6 +55,16 @@ Future<Map<String,dynamic>> createGoalWithoutAssist (int matchId, int teamId, in
         }
       )
        
+    );
+    
+}
+
+
+/// This function sends a DELETE request to the server to delete a goal.
+Future<Map<String,dynamic>> deleteGoal (int id) async {
+  
+    return delete(
+      '${_path}delete/$id/',
     );
     
 }

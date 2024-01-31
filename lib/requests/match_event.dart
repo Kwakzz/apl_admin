@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'delete.dart';
 import 'get.dart';
 import 'post.dart';
 
@@ -59,3 +60,14 @@ Future<Map<String,dynamic>> createBooking (int matchId, int playerId, int teamId
   );
     
 }
+
+/// This function deletes a match event.
+Future<Map<String,dynamic>> deleteMatchEvent (int matchEventId) async {
+  
+    return delete(
+      '${_path}delete/$matchEventId/',
+    );
+    
+}
+
+

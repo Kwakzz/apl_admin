@@ -64,7 +64,7 @@ class AddButton extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(
-          horizontal: 35,
+          horizontal: 45,
           vertical: 15,
         ),
       ),

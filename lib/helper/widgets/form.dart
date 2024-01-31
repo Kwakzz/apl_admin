@@ -226,7 +226,7 @@ class UploadImageButton extends StatelessWidget {
     return Center (
       child: Container(
         margin: const EdgeInsets.only(top: 6, bottom: 6),
-        width: MediaQuery.of(context).size.width * 0.3,
+        width: MediaQuery.of(context).size.width * 0.5,
         height: 50,
         child: ElevatedButton(
           onPressed: onPressed,
@@ -238,7 +238,7 @@ class UploadImageButton extends StatelessWidget {
             style: GoogleFonts.roboto(
               fontSize: 12,
               color: Colors.white,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

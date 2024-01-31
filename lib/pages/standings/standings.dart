@@ -1,7 +1,9 @@
+import 'package:apl_admin/helper/widgets/app_bar.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/form.dart';
 import 'package:apl_admin/helper/widgets/future_builder.dart';
 import 'package:apl_admin/helper/widgets/menu_widgets.dart';
+import 'package:apl_admin/helper/widgets/text.dart';
 import 'package:apl_admin/requests/season.dart';
 import 'package:apl_admin/requests/standings.dart';
 import 'package:flutter/material.dart';
@@ -113,4 +115,61 @@ class StandingsState extends State<Standings> {
 
 }
 
+class ViewStandings extends StatefulWidget {
+  const ViewStandings(
+    {
+      super.key,
+      required this.standings
+    }
+  );
 
+  final dynamic standings;
+  
+  @override
+  ViewStandingsState createState() => ViewStandingsState();
+}
+
+class ViewStandingsState extends State<ViewStandings> {
+  Widget buildStandingsList(String header, List standingsTeams) {
+    return Column( // Change here to Column
+      children: [
+        const SizedBox(height: 20),
+        CenteredText(
+          text: HeaderText(
+            text: header,
+          ),
+        ),
+        StandingsTable(standingsTeams: standingsTeams),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: RegularAppBar(
+          prevContext: context,
+          title: "View Standings",
+        ),
+        body: Column(
+          children: [
+
+            if (widget.standings.runtimeType.toString() == "_JsonMap")
+              buildStandingsList("Premier League", widget.standings['standings_teams'])
+            else
+              Column(
+                children: [
+                  buildStandingsList("FA Cup", widget.standings[0]['standings_teams']),
+                  const SizedBox(height: 20),
+                  buildStandingsList("FA Cup", widget.standings[1]['standings_teams']),
+                ],
+              ),
+          ],
+        ),
+      )
+    );
+  }
+}

@@ -88,7 +88,7 @@ Future<Map<String, dynamic>> createMatchday(
   return postData(
     'match_day/create/',
     jsonEncode(<String, String> {
-      'season_id': seasonId.toString(),
+      'season': seasonId.toString(),
       'date': date,
       'number': number.toString(),
     })

@@ -651,7 +651,7 @@ class TransfersDialogBoxState extends State <TransfersDialogBox> {
                 },
                 onChanged: (value) {
                   setState(() {
-                    widget.selectedTeamId = widget.teams.firstWhere((team) => "${team['name']}}" == value)['id'];
+                    widget.selectedTeamId = widget.teams.firstWhere((team) => "${team['name']}" == value)['id'];
                   });
                 },
               ),
@@ -666,7 +666,7 @@ class TransfersDialogBoxState extends State <TransfersDialogBox> {
             if (_formKey.currentState!.validate()) {
 
               Map<String, dynamic> response = await transferPlayer(
-                widget.player['team']['id'], 
+                widget.selectedTeamId,
                 widget.player['id']
               );
  
@@ -681,6 +681,9 @@ class TransfersDialogBoxState extends State <TransfersDialogBox> {
                       title: 'Success', 
                       onOk: () {
                         Navigator.of(context).pop();
+                        setState(() {
+                          
+                        });
                       }
                     );
                   }

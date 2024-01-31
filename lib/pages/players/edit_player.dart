@@ -1,34 +1,32 @@
-import 'dart:typed_data';
-
+import 'dart:convert';
 import 'package:apl_admin/helper/functions/string.dart';
 import 'package:apl_admin/helper/functions/validate.dart';
 import 'package:apl_admin/helper/widgets/app_bar.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/form.dart';
 import 'package:apl_admin/requests/players.dart';
-import 'package:apl_admin/requests/teams.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CreatePlayer extends StatefulWidget {
+class EditPlayer extends StatefulWidget {
 
-  const CreatePlayer({
-      super.key,
-    });
+  const EditPlayer({
+    super.key,
+    required this.player
+  });
+
+  final Map<String, dynamic> player;
 
   @override
-  CreatePlayerState createState() => CreatePlayerState();
+  EditPlayerState createState() => EditPlayerState();
 
 }
 
-class CreatePlayerState extends State<CreatePlayer> {
+class EditPlayerState extends State<EditPlayer> {
 
   final _formKey = GlobalKey<FormState>();
 
   int _selectedPositionId = 0;
-  int _selectedTeamId = 0;
-  String _selectedGender = 'M';
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _yearGroupController = TextEditingController();
@@ -36,22 +34,31 @@ class CreatePlayerState extends State<CreatePlayer> {
   DateTime? _birthDate;
   String _selectedMajor= '';
 
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedPositionId = widget.player['position']['id'];
+    _firstNameController.text = widget.player['first_name'];
+    _lastNameController.text = widget.player['last_name'];
+    _yearGroupController.text = widget.player['year_group'].toString();
+    _birthDateController.text = widget.player['birth_date'];
+    _birthDate = DateTime.parse(widget.player['birth_date']);
+    _selectedMajor = widget.player['major'];
+
+    getPositions().then((value) {
+      setState(() {
+        positions = value;
+      });
+    });
+    
+
+  }
+
+  
+
   List<Map<String, dynamic>> positions = [];
   List<Map<String, dynamic>> teams = [];
-
-  Uint8List? _selectedImageBytes;
-
-  Future<void> _pickImage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
-
-    if (result != null) {
-      setState(() {
-        _selectedImageBytes = result.files.single.bytes;
-      });
-    }
-  }
 
   /// This function shows a date picker when the user taps on the date of birth field.
   /// It updates the field with the selected date.
@@ -81,24 +88,6 @@ class CreatePlayerState extends State<CreatePlayer> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    getPositions().then((value) {
-      setState(() {
-        positions = value;
-      });
-    });
-    
-
-    getTeams().then((value) {
-      setState(() {
-        teams = value;
-      });
-    });
-    
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +95,7 @@ class CreatePlayerState extends State<CreatePlayer> {
 
     return Scaffold(
       appBar: const RegularAppBarNoBack(
-        title: "Create Player",
+        title: "Edit Player",
       ),
 
       body: MaterialApp(
@@ -115,14 +104,6 @@ class CreatePlayerState extends State<CreatePlayer> {
           key: _formKey,
           child: ListView(
             children: [
-
-              UploadImageButton(
-                text: "Upload Player Image",
-                onPressed: _pickImage,
-              ),
-
-              if (_selectedImageBytes != null)
-                Image.memory(_selectedImageBytes!, height: 200),
 
               AppFormField(
                 controller: _firstNameController,
@@ -188,6 +169,7 @@ class CreatePlayerState extends State<CreatePlayer> {
               ),
 
               AppDropDownButton(
+                selectedValue: _selectedMajor,
                 items: const ['CS', 'EE', 'ME', 'CE', 'BA', 'MIS'],
                 hintText: "Select Major",
                 onChanged: (value) {
@@ -203,25 +185,10 @@ class CreatePlayerState extends State<CreatePlayer> {
                 },
               ),
 
-              if (teams.isNotEmpty)
-                AppDropDownButton(
-                  items: teams.map((team) => "${team['name']}").toList(),
-                  hintText: "Select Team",
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedTeamId = teams.firstWhere((team) => team['name'] == value)['id'];
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select a team';
-                    }
-                    return null;
-                  },
-                ),
 
               if (positions.isNotEmpty)
                 AppDropDownButton(
+                  selectedValue: positions.firstWhere((position) => position['id'] == _selectedPositionId)['name'],
                   items: positions.map((position) => "${position['name']}").toList(),
                   hintText: "Select Position",
                   onChanged: (value) {
@@ -238,56 +205,28 @@ class CreatePlayerState extends State<CreatePlayer> {
                   
                 ),
 
-              AppDropDownButton(
-                hintText: "Gender",
-                items: const ['M', 'W'], 
-                onChanged: (value) {
-                  setState(() {
-                    _selectedGender = value!;
-                  });
-                },
-                validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select a gender';
-                    }
-                    return null;
-                }
-              ),
 
               SubmitFormButton(
-                text: "Create Player",
+                text: "Edit Player",
                 onPressed: () async {
 
                   if (_formKey.currentState!.validate()) {
 
-                    Map<String, dynamic> response = {};
+                    // jsonEncode player data
+                    String playerJson = jsonEncode(<String, dynamic> {
+                      'first_name': _firstNameController.text,
+                      'last_name': _lastNameController.text,
+                      'birth_date': _birthDateController.text,
+                      'year_group': _yearGroupController.text,
+                      'position': _selectedPositionId.toString(),
+                      'major': _selectedMajor,
+                    }); 
 
-                    if (_selectedImageBytes == null) {
-                      response = await createPlayerWithoutImage(
-                        _firstNameController.text,
-                        _lastNameController.text,
-                        _birthDateController.text,
-                        _yearGroupController.text,
-                        _selectedMajor,
-                        _selectedGender,
-                        _selectedTeamId,
-                        _selectedPositionId
+                    Map<String, dynamic> response = await updatePlayer(
+                        widget.player['id'].toString(),
+                        playerJson
                       );
-                    }
-
-                    else {
-                      response = await createPlayerWithImage(
-                        _firstNameController.text,
-                        _lastNameController.text,
-                        _birthDateController.text,
-                        _yearGroupController.text,
-                        _selectedMajor,
-                        _selectedGender,
-                        _selectedTeamId,
-                        _selectedPositionId,
-                        _selectedImageBytes,
-                      );
-                    }
+                    
 
                     if (!mounted) return;
 
@@ -305,6 +244,8 @@ class CreatePlayerState extends State<CreatePlayer> {
                           );
                         }
                       );
+
+                      Navigator.pop(context);
 
                     }
 

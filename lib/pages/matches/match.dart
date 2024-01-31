@@ -1,9 +1,12 @@
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/form.dart';
 import 'package:apl_admin/helper/widgets/menu_widgets.dart';
+import 'package:apl_admin/helper/widgets/text.dart';
 import 'package:apl_admin/requests/season.dart';
 import 'package:apl_admin/requests/teams.dart';
 import 'package:flutter/material.dart';
+
+import 'view_match_events.dart';
 
 class Match extends StatefulWidget {
 
@@ -120,6 +123,27 @@ class MatchState extends State<Match> {
 
               Result(
                 result: widget.match
+              ),
+
+              const SizedBox(height: 20),
+
+              CenteredText(
+                text: LinkText(
+                  text: const SubHeaderText(
+                    text:'View Match Events',
+                    color: Colors.red,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => ViewMatchEvents(
+                          matchId: widget.match['id'],
+                        )
+                      )
+                    );
+                  }
+                )
               ),
 
               const SizedBox(height: 20),

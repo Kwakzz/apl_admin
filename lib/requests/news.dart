@@ -48,6 +48,7 @@ Future<Map<String, dynamic>> createNewsItem(
       Uri.http(domain, '/news-item/create/'),
     );
 
+    request.fields['author'] = 1.toString();
     request.fields['title'] = title;
     request.fields['subtitle'] = subtitle;
     request.fields['text'] = text;

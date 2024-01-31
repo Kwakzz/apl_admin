@@ -5,6 +5,7 @@ import 'package:apl_admin/requests/post.dart';
 
 import 'api_uri.dart';
 import 'get.dart';
+import 'patch.dart';
 
 String _path = '/player/';
 
@@ -116,13 +117,23 @@ Future<List<Map<String,dynamic>>> getPlayers () async {
 
 
 /// This function sends a GET request to the server to get a player by id.
-Future<Map<String,dynamic>> getPlayer (String id) async {
+Future<Map<String,dynamic>> getPlayer (String playerId) async {
   
     return fetchMap(
       '${_path}get',
       {
-        'id': id,
+        'id': playerId,
       }
+    );
+    
+}
+
+/// This function sends a PATCH request to the server to update a player.
+Future<Map<String,dynamic>> updatePlayer (String playerId, String playerJson) async {
+  
+    return update(
+      '${_path}update/$playerId/',
+      playerJson,
     );
     
 }
@@ -136,7 +147,8 @@ Future<List<Map<String,dynamic>>> getPositions () async {
     
 }
 
-Future<Map<String, dynamic>> transferPlayer (toTeamId, playerId) async {
+/// This function sends a POST request to the server to create a transfer, and update the player's team.
+Future<Map<String, dynamic>> transferPlayer (int toTeamId, int playerId) async {
 
   return postData(
     '${_path}transfer/create/',
