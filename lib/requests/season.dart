@@ -24,6 +24,20 @@ Future<Map<String, dynamic>> createSeason(
 
 }
 
+/// This function sends a PATCH request to the server to update a season.
+/// The season is identified by its id.
+Future<Map<String, dynamic>> updateSeason(
+  String id,
+  String seasonJson
+) async {
+
+  return update(
+    '${_path}update/$id/',
+    seasonJson
+  );
+
+}
+
 // This function sends a GET request to the server to get a list of all APL seasons.
 Future<List<Map<String,dynamic>>> getSeasons () async {
   
@@ -92,6 +106,19 @@ Future<Map<String, dynamic>> createMatchday(
       'date': date,
       'number': number.toString(),
     })
+  );
+
+}
+
+/// This function sends a PATCH request to the server to update a matchday in a season.
+Future<Map<String, dynamic>> updateMatchday(
+  String id,
+  String matchDayJson
+) async {
+
+  return update(
+    'match_day/update/$id/',
+    matchDayJson
   );
 
 }

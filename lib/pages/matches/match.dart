@@ -341,7 +341,10 @@ class MatchState extends State<Match> {
                                   message: response['message'],
                                   title: 'Success', 
                                   onOk: () {
-                                    Navigator.pop(context);
+                                    setState(() {
+                                      widget.match['has_ended'] = false;
+                                      widget.match['has_started'] = true;
+                                    });
                                   }
                                 );
                               }

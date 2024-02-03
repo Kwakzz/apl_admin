@@ -131,7 +131,7 @@ class ViewStandings extends StatefulWidget {
 
 class ViewStandingsState extends State<ViewStandings> {
   Widget buildStandingsList(String header, List standingsTeams) {
-    return Column( // Change here to Column
+    return Column(
       children: [
         const SizedBox(height: 20),
         CenteredText(
@@ -146,7 +146,6 @@ class ViewStandingsState extends State<ViewStandings> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -156,10 +155,9 @@ class ViewStandingsState extends State<ViewStandings> {
         ),
         body: Column(
           children: [
-
-            if (widget.standings.runtimeType.toString() == "_JsonMap")
+            if (widget.standings is Map)
               buildStandingsList("Premier League", widget.standings['standings_teams'])
-            else
+            else if (widget.standings is List)
               Column(
                 children: [
                   buildStandingsList("FA Cup", widget.standings[0]['standings_teams']),
@@ -169,7 +167,7 @@ class ViewStandingsState extends State<ViewStandings> {
               ),
           ],
         ),
-      )
+      ),
     );
   }
 }

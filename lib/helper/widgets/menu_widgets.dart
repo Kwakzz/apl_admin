@@ -2,10 +2,12 @@
 import 'package:apl_admin/helper/functions/date_time.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/text.dart';
+import 'package:apl_admin/pages/matchdays/edit_matchday.dart';
 import 'package:apl_admin/pages/matches/match.dart';
 import 'package:apl_admin/pages/matches/matches.dart';
 import 'package:apl_admin/pages/news/view_news.dart';
 import 'package:apl_admin/pages/players/edit_player.dart';
+import 'package:apl_admin/pages/seasons/edit_season.dart';
 import 'package:apl_admin/pages/standings/standings.dart';
 import 'package:apl_admin/requests/match_event.dart';
 import 'package:apl_admin/requests/standings.dart';
@@ -203,7 +205,14 @@ class SeasonTile extends StatelessWidget {
           onSelected: (value) {
             switch (value) {
               case "edit":
-                break;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditSeason(
+                      season: season
+                    )
+                  ),
+                );
               default:
             }
           },
@@ -270,7 +279,12 @@ class MatchDayTile extends StatelessWidget {
           onSelected: (value) {
             switch (value) {
               case "edit":
-                break;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditMatchDay(matchday: matchday)
+                  ),
+                );
               default:
             }
           },
