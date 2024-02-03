@@ -740,6 +740,10 @@ class StandingsTileState extends State<StandingsTile> {
                                 message: response['message'],
                                 title: 'Success', 
                                 onOk: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const Home())
+                                  );
                                 }
                               );
                             }
@@ -754,6 +758,7 @@ class StandingsTileState extends State<StandingsTile> {
                                 message: response['message'],
                                 title: 'Error', 
                                 onOk: () {
+
                                 }
                               );
                             }
