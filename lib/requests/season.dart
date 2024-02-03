@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:apl_admin/requests/patch.dart';
 
+import 'delete.dart';
 import 'get.dart';
 import 'post.dart';
 
@@ -220,6 +221,15 @@ Future<Map<String, dynamic>> restartMatch(int matchId) async {
       'has_ended': false,
     })
   );
+}
+
+/// This function deletes a match. 
+Future<Map<String, dynamic>> deleteMatch(int matchId) async {
+
+  return delete(
+    'match/delete/${matchId.toString()}/',
+  );
+
 }
 
 

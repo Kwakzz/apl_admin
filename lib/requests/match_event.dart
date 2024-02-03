@@ -65,7 +65,7 @@ Future<Map<String,dynamic>> createBooking (int matchId, int playerId, int teamId
 Future<Map<String,dynamic>> deleteMatchEvent (int matchEventId) async {
   
     return delete(
-      '${_path}delete/$matchEventId/',
+      '${_path}delete/${matchEventId.toString()}/',
     );
     
 }

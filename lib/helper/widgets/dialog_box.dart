@@ -105,7 +105,7 @@ class GoalDialogBox extends StatefulWidget {
   final Map<String, dynamic> match;
   final Map<String, dynamic> scoringTeam;
   int selectedScorerId;
-  int? selectedAssisterId;
+  int selectedAssisterId;
   TextEditingController minuteController;
 
   GoalDialogBox(
@@ -204,6 +204,8 @@ class GoalDialogBoxState extends State <GoalDialogBox> {
           onPressed: () async {
 
             if (_formKey.currentState!.validate()) {
+
+              
 
               Map<String, dynamic> response;
         
@@ -483,7 +485,6 @@ class AddStandingsDialogBoxState extends State <AddStandingsDialogBox> {
                 setState(() {
                   widget.selectedSeasonId = widget.seasons.firstWhere((season) => "${season['name']}" == value)['id'];
                 });
-                print(widget.selectedSeasonId);
               },
             ),
 
@@ -525,14 +526,12 @@ class AddStandingsDialogBoxState extends State <AddStandingsDialogBox> {
                 response = await createMensLeagueStandings(
                   widget.selectedSeasonId
                 );
-                print(response);
               }
 
               if (widget.selectedCompetition == "Men's FA Cup") {
                 response = await createMensFACupStandings(
                   widget.selectedSeasonId
                 );
-                print (widget.selectedSeasonId);
               }
 
               if (widget.selectedCompetition == "Women's Premier League") {

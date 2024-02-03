@@ -10,7 +10,7 @@ Future<Map<String, dynamic>> postData(String path, String body) async {
   try {
 
     final response = await https.post(
-      Uri.https(domain, path),
+      Uri.http(domain, path),
       headers: <String, String> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

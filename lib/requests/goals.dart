@@ -22,7 +22,7 @@ Future<List<Map<String,dynamic>>> getMatchGoalsByTeam (int matchId, int teamId) 
 
 
 /// This function sends a POST request to the server to create a goal with an assist.
-Future<Map<String,dynamic>> createGoalWithAssist (int matchId, int teamId, int scorerId, int? assisterId, int minute) async {
+Future<Map<String,dynamic>> createGoalWithAssist (int matchId, int teamId, int scorerId, int assisterId, int minute) async {
   
     return postData(
       'match_event${_path}create/',
@@ -31,7 +31,7 @@ Future<Map<String,dynamic>> createGoalWithAssist (int matchId, int teamId, int s
           'match': matchId.toString(),
           'scoring_team': teamId.toString(),
           'player': scorerId.toString(),
-          'assister': assisterId.toString(),
+          'assist_provider': assisterId.toString(),
           'minute': minute,
         }
       )

@@ -2,14 +2,17 @@
 import 'package:apl_admin/helper/functions/date_time.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/text.dart';
+import 'package:apl_admin/pages/home.dart';
 import 'package:apl_admin/pages/matchdays/edit_matchday.dart';
 import 'package:apl_admin/pages/matches/match.dart';
 import 'package:apl_admin/pages/matches/matches.dart';
 import 'package:apl_admin/pages/news/view_news.dart';
 import 'package:apl_admin/pages/players/edit_player.dart';
+import 'package:apl_admin/pages/players/view_player.dart';
 import 'package:apl_admin/pages/seasons/edit_season.dart';
 import 'package:apl_admin/pages/standings/standings.dart';
 import 'package:apl_admin/requests/match_event.dart';
+import 'package:apl_admin/requests/season.dart';
 import 'package:apl_admin/requests/standings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -149,7 +152,13 @@ class PlayerTile extends StatelessWidget {
           },
         ),
         onTap: () {
-          
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewPlayer(
+                player: player
+              )
+            ),
+          );
         },
       )
     );
@@ -764,7 +773,7 @@ class StandingsTileState extends State<StandingsTile> {
 
 
 /// This is used to display fixtures in the Fixtures page.
-class Fixture extends StatelessWidget{
+class Fixture extends StatefulWidget{
 
   /// This is used to display fixtures in the Fixtures page.
   const Fixture(
@@ -775,21 +784,21 @@ class Fixture extends StatelessWidget{
   );
 
   final Map<String,dynamic> fixture;
+  
+  @override
+  FixtureState createState() => FixtureState();
+
+
+}
+
+/// This is used to display fixtures in the Fixtures page.
+class FixtureState extends State<Fixture> {
+
+  /// This is used to display fixtures in the Fixtures page.
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context, 
-          MaterialPageRoute(
-            builder: (context) => Match(
-              match: fixture
-            )
-          )
-        );
-      },
-      child: Center(
+    return Center(
 
         child: Column(
           children:[
@@ -797,12 +806,93 @@ class Fixture extends StatelessWidget{
             const SizedBox(height: 15),
 
             Text(
-              "${fixture['competition']['name']} (${fixture['competition']['gender']})",
+              "${widget.fixture['competition']['name']} (${widget.fixture['competition']['gender']})",
               style: GoogleFonts.roboto(
                 color: Colors.black87,
                 fontSize: 13,
                 fontWeight: FontWeight.w500
               )
+            ),
+
+            SizedBox(
+              height: 70,
+
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => Match(
+                        match: widget.fixture
+                      )
+                    )
+                  );
+                },
+                child: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image.network(
+                      widget.fixture['home_team']['logo_url'],
+                      width: MediaQuery.of(context).size.width*0.2,
+                      height: 40,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const Icon(Icons.error, color: Colors.white,);
+                      }
+                    ),
+                    
+
+                    Text(
+                      widget.fixture['home_team']['name_abbreviation'],
+                      style: GoogleFonts.roboto(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 0.2,
+                          style: BorderStyle.solid
+                        )
+                      ),
+                      child: Text(
+                        widget.fixture['match_time'].substring(0, 5),
+                        style: GoogleFonts.roboto(
+                          color: const Color.fromARGB(255, 197, 50, 50),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600
+                        )
+                      ),
+                      
+                    ),
+
+                    Text(
+                      widget.fixture['away_team']['name_abbreviation'],
+                      style: GoogleFonts.roboto(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    
+
+                    Image.network(
+                      widget.fixture['away_team']['logo_url'],
+                      width: MediaQuery.of(context).size.width*0.2,
+                      height: 40,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return const Icon(Icons.error, color: Colors.white,);
+                      }
+                    ),
+                    
+                  ],
+                )
+              ),
             ),
 
             Container(
@@ -815,85 +905,75 @@ class Fixture extends StatelessWidget{
                   )
                 )
               ),
-              height: 70,
+              child: TextButton(    
+                onPressed: () {
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context) {
+                      return ConfirmDialogBox(
+                        title: "Delete Match",
+                        message: "Are you sure you want to delete this match?",
+                        onOk: () async {
+                          Map <String, dynamic> response = await deleteMatch(widget.fixture['id']);
 
-              child: Row (
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Image.network(
-                    fixture['home_team']['logo_url'],
-                    width: MediaQuery.of(context).size.width*0.2,
-                    height: 40,
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const Icon(Icons.error, color: Colors.white,);
+                          if (!mounted) return;
+
+                          if (response['status']) {
+                            showDialog(
+                              context: context, 
+                              builder: (BuildContext context) {
+                                return MessageDialogBox(
+                                  message: response['message'],
+                                  title: 'Success', 
+                                  onOk: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const Home())
+                                    );
+                                  }
+                                );
+                              }
+                            );
+                          }
+
+                          else {
+                            showDialog(
+                              context: context, 
+                              builder: (BuildContext context) {
+                                return MessageDialogBox(
+                                  message: response['message'],
+                                  title: 'Error', 
+                                  onOk: () {
+                                  }
+                                );
+                              }
+                            );
+                          }
+                        },
+                      );
                     }
-                  ),
-                  
-
-                  Text(
-                    fixture['home_team']['name_abbreviation'],
-                    style: GoogleFonts.roboto(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500
-                    ),
-                  ),
-
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 0.2,
-                        style: BorderStyle.solid
-                      )
-                    ),
-                    child: Text(
-                      fixture['match_time'].substring(0, 5),
-                      style: GoogleFonts.roboto(
-                        color: const Color.fromARGB(255, 197, 50, 50),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600
-                      )
-                    ),
-                    
-                  ),
-
-                  Text(
-                    fixture['away_team']['name_abbreviation'],
-                    style: GoogleFonts.roboto(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500
-                    ),
-                  ),
-                  
-
-                  Image.network(
-                    fixture['away_team']['logo_url'],
-                    width: MediaQuery.of(context).size.width*0.2,
-                    height: 40,
-                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const Icon(Icons.error, color: Colors.white,);
-                    }
-                  ),
-                  
-                ],
+                  );
+                },
+                child: RegularText(
+                  text: "Delete Match",
+                  color: Colors.red,
+                )
               )
             ),
 
+            const SizedBox(height: 15),
+
+            const Divider(
+              color: Colors.grey,
+              thickness: 0.2,)
           ]
-
-        
-
         )
-
-      )
     );
   }
 
 }
+
+
 
 /// This is used to display results in the Results page.
 class Result extends StatelessWidget{
@@ -1241,3 +1321,128 @@ class ListViewHeading extends StatelessWidget {
 
 }
 
+
+/// This is rectangle is used on the ViewPlayer page. It contains the player's name and image.
+class PlayerRectangle extends StatelessWidget {
+
+  /// This is rectangle is used on the ViewPlayer page. It contains the player's name and image.
+  // ignore: prefer_const_constructors_in_immutables
+  PlayerRectangle(
+    {
+      super.key, 
+      required this.player
+    }
+  );
+
+  final Map<String,dynamic> player;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        height: 130,
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.only(right:30),
+        decoration:  BoxDecoration(
+          image: DecorationImage(
+            image:const AssetImage("assets/menu_rectangle.jpg"),
+            colorFilter: ColorFilter.mode(const Color.fromARGB(255, 197, 50, 50).withOpacity(1), BlendMode.hue),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+
+          children: [
+
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    player['first_name'],
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  Text(
+                    player['last_name'],
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900
+                    )
+                  ),
+                ],
+              )
+            ),
+
+            ClipRect(
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: Image.network(
+                  player['image'] ?? "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
+                  width: 100,
+                  height: 100,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return const Icon(Icons.error, color: Colors.white,);
+                  }
+                ),
+              )
+            )
+          ],
+        ),
+      )
+  
+    );
+  }
+
+}
+
+/// This list tile is used to display player details like name, age.
+class PlayerDetailsTile extends StatelessWidget {
+
+  /// This list tile is used to display player details like name, age.
+  const PlayerDetailsTile(
+    {
+      super.key, 
+      required this.playerDetail,
+      required this.title,
+      required this.team
+    }
+  );
+
+  final String playerDetail;
+  final String title;
+  final Map<String,dynamic> team;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 5, right: 5),
+      color: Colors.white,
+      child: ListTile(
+        title: Text(
+          title.toString().toUpperCase(),
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
+        ),          
+        trailing: Text(
+          playerDetail,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      )
+    );
+  }
+
+}
