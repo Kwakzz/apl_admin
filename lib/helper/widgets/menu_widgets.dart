@@ -383,9 +383,10 @@ class MatchEventTileState extends State<MatchEventTile> {
                             message: response['message'],
                             title: 'Success', 
                             onOk: () {
-                              setState(() {
-                                
-                              });
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Home())
+                              );
                             }
                           );
                         }
