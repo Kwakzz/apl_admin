@@ -10,7 +10,7 @@ Future<Map<String, dynamic>> update(String path, String body) async {
   try {
 
     final response = await https.patch(
-      Uri.http(domain, path),
+      Uri.https(domain, path),
       headers: <String, String> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

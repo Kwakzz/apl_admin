@@ -9,7 +9,7 @@ Future<Map<String, dynamic>> fetchMap (String path, Map<String, dynamic> queryPa
 
   try {
 
-    final uri = queryParams != {} ? Uri.http(domain, path, queryParams) : Uri.http(domain, path);
+    final uri = queryParams != {} ? Uri.https(domain, path, queryParams) : Uri.https(domain, path);
 
 
     final response = await https.get(
@@ -49,7 +49,7 @@ Future<List<Map<String, dynamic>>> fetchListWithQueryParams (String path, Map<St
 
   try {
     final response = await https.get(
-      Uri.http(domain, path, queryParams),
+      Uri.https(domain, path, queryParams),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -84,7 +84,7 @@ Future<List<Map<String, dynamic>>> fetchListWithoutQueryParams (String path) asy
 
   try {
     final response = await https.get(
-      Uri.http(domain, path),
+      Uri.https(domain, path),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',

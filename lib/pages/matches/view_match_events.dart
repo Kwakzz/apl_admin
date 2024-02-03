@@ -53,7 +53,7 @@ class ViewMatchEventsState extends State<ViewMatchEvents> {
                   },
                 );
               }, 
-              errorText: "players"
+              errorText: "match events"
             )
           ),
         ],
