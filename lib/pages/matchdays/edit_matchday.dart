@@ -4,6 +4,7 @@ import 'package:apl_admin/helper/functions/validate.dart';
 import 'package:apl_admin/helper/widgets/app_bar.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/form.dart';
+import 'package:apl_admin/pages/home.dart';
 import 'package:apl_admin/requests/season.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -159,10 +160,12 @@ class EditMatchDayState extends State<EditMatchDay> {
                             message: response['message'],
                             title: 'Error', 
                             onOk: () {
-                              setState(() {
-                                widget.matchday['number'] = _matchDayNumberController.text; 
-                                widget.matchday['date'] = _matchDayDateController.text;
-                              });
+                              Navigator.pushReplacement(
+                                context, 
+                                MaterialPageRoute(
+                                  builder: (context) => const Home()
+                                )
+                              );
                             }
                           );
                         }

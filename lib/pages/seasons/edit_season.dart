@@ -4,6 +4,7 @@ import 'package:apl_admin/helper/functions/validate.dart';
 import 'package:apl_admin/helper/widgets/app_bar.dart';
 import 'package:apl_admin/helper/widgets/dialog_box.dart';
 import 'package:apl_admin/helper/widgets/form.dart';
+import 'package:apl_admin/pages/home.dart';
 import 'package:apl_admin/requests/season.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -162,6 +163,12 @@ class EditSeasonState extends State<EditSeason> {
                             title: "Success",
                             message: response['message'],
                             onOk: () {
+                              Navigator.pushReplacement(
+                                context, 
+                                MaterialPageRoute(
+                                  builder: (context) => const Home()
+                                )
+                              );
                             },
                           );
                         }
