@@ -1,4 +1,4 @@
-apl_admin
+# APL Admin
 
 This Flutter project empowers administrators of the Ashesi Premier League (APL) with a mobile application to manage league data, schedules, and other crucial tasks efficiently.
 
