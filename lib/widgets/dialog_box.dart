@@ -1,17 +1,16 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:apl_admin/helper/widgets/form.dart';
-import 'package:apl_admin/requests/goals.dart';
-import 'package:apl_admin/requests/match_event.dart';
-import 'package:apl_admin/requests/players.dart';
-import 'package:apl_admin/requests/standings.dart';
-import 'package:apl_admin/requests/teams.dart';
+import 'package:apl_admin/widgets/form.dart';
+import 'package:apl_admin/controllers/goals.dart';
+import 'package:apl_admin/controllers/match_event.dart';
+import 'package:apl_admin/controllers/players.dart';
+import 'package:apl_admin/controllers/standings.dart';
+import 'package:apl_admin/controllers/teams.dart';
 import 'package:flutter/material.dart';
 
 import 'text.dart';
 
 
-/// This dialog box is used to display a message. It is usually used to display a success or error message.
 class MessageDialogBox extends StatelessWidget {
 
   final String message;
@@ -98,8 +97,7 @@ class ConfirmDialogBox extends StatelessWidget {
 }
 
 
-/// This dialog box contains a form for creating a goal.
-class GoalDialogBox extends StatefulWidget {
+class CreateGoalDialogBox extends StatefulWidget {
 
   final List<Map<String, dynamic>> players;
   final Map<String, dynamic> match;
@@ -108,7 +106,7 @@ class GoalDialogBox extends StatefulWidget {
   int selectedAssisterId;
   TextEditingController minuteController;
 
-  GoalDialogBox(
+  CreateGoalDialogBox(
     {
       super.key, 
       required this.players,
@@ -121,10 +119,10 @@ class GoalDialogBox extends StatefulWidget {
   );
 
   @override
-  GoalDialogBoxState createState() => GoalDialogBoxState();
+  CreateGoalDialogBoxState createState() => CreateGoalDialogBoxState();
 }
 
-class GoalDialogBoxState extends State <GoalDialogBox> {
+class CreateGoalDialogBoxState extends State <CreateGoalDialogBox> {
 
   final _formKey = GlobalKey<FormState>();
 
@@ -276,8 +274,7 @@ class GoalDialogBoxState extends State <GoalDialogBox> {
 }
 
 
-/// This dialog box contains a form for creating a goal.
-class BookingDialogBox extends StatefulWidget {
+class CreateBookingDialogBox extends StatefulWidget {
 
   final List<Map<String, dynamic>> players;
   final Map<String, dynamic> match;
@@ -286,7 +283,7 @@ class BookingDialogBox extends StatefulWidget {
   String selectedCardType;
   final Map<String, dynamic> team;
 
-  BookingDialogBox(
+  CreateBookingDialogBox(
     {
       super.key, 
       required this.players,
@@ -299,10 +296,10 @@ class BookingDialogBox extends StatefulWidget {
   );
 
   @override
-  BookingDialogBoxState createState() => BookingDialogBoxState();
+  CreateBookingDialogBoxState createState() => CreateBookingDialogBoxState();
 }
 
-class BookingDialogBoxState extends State <BookingDialogBox> {
+class CreateBookingDialogBoxState extends State <CreateBookingDialogBox> {
 
   final _formKey = GlobalKey<FormState>();
 
@@ -436,7 +433,6 @@ class BookingDialogBoxState extends State <BookingDialogBox> {
 
 
 
-/// This dialog box contains a form for creating a goal.
 class AddStandingsDialogBox extends StatefulWidget {
 
   final List<Map<String, dynamic>> seasons;
@@ -589,14 +585,13 @@ class AddStandingsDialogBoxState extends State <AddStandingsDialogBox> {
 
 
 
-/// This dialog box contains a form for creating a goal.
-class TransfersDialogBox extends StatefulWidget {
+class CreateTransferDialogBox extends StatefulWidget {
 
   final Map<String, dynamic> player;
   int selectedTeamId;
   List<Map<String, dynamic>> teams;
 
-  TransfersDialogBox(
+  CreateTransferDialogBox(
     {
       super.key, 
       required this.player,
@@ -606,10 +601,10 @@ class TransfersDialogBox extends StatefulWidget {
   );
 
   @override
-  TransfersDialogBoxState createState() => TransfersDialogBoxState();
+  CreateTransferDialogBoxState createState() => CreateTransferDialogBoxState();
 }
 
-class TransfersDialogBoxState extends State <TransfersDialogBox> {
+class CreateTransferDialogBoxState extends State <CreateTransferDialogBox> {
 
   @override
   void initState() {

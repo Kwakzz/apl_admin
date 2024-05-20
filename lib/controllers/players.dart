@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
-import 'package:apl_admin/requests/post.dart';
+import 'package:apl_admin/controllers/post.dart';
 
 import 'api_uri.dart';
 import 'get.dart';

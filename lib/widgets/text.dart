@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'button.dart';
+
 
 /// This class is used to create a text widget for headings.
 class HeaderText extends StatelessWidget {
@@ -157,4 +159,47 @@ class LinkText extends StatelessWidget {
   }
 
 }
+
+
+class ListViewHeading extends StatelessWidget {
+
+  const ListViewHeading({
+    super.key,
+    required this.heading,
+    required this.buttonText,
+    required this.onPressed,
+  });
+
+  final String heading;
+  final String buttonText;
+  final Function () onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          LeftAlignedText(
+            text: HeaderText(
+              text: heading, 
+              fontSize: 16, 
+              fontWeight: FontWeight.w700 ,)
+          ),
+
+          AddButton(
+            onPressed: onPressed,
+            text: buttonText,
+          ),
+        ],
+
+      ),
+    );
+  }
+
+}
+
+
 

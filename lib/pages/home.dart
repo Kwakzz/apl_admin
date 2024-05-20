@@ -1,6 +1,6 @@
-import 'package:apl_admin/helper/widgets/app_bar.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
-import 'package:apl_admin/helper/widgets/text.dart';
+import 'package:apl_admin/widgets/app_bar.dart';
+import 'package:apl_admin/widgets/list_tile.dart';
+import 'package:apl_admin/widgets/text.dart';
 import 'package:apl_admin/pages/news/news.dart';
 import 'package:apl_admin/pages/standings/standings.dart';
 import 'package:flutter/material.dart';

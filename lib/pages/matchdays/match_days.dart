@@ -1,8 +1,8 @@
-import 'package:apl_admin/helper/widgets/future_builder.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
-import 'package:apl_admin/helper/widgets/text.dart';
+import 'package:apl_admin/widgets/future_builder.dart';
+import 'package:apl_admin/widgets/list_tile.dart';
+import 'package:apl_admin/widgets/text.dart';
 import 'package:apl_admin/pages/matchdays/create_matchday.dart';
-import 'package:apl_admin/requests/season.dart';
+import 'package:apl_admin/controllers/season.dart';
 import 'package:flutter/material.dart';
 
 class Matchdays extends StatefulWidget {

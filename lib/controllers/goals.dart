@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:apl_admin/requests/post.dart';
+import 'package:apl_admin/controllers/post.dart';
 
 import 'delete.dart';
 import 'get.dart';

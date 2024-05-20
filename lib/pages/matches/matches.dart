@@ -1,8 +1,8 @@
-import 'package:apl_admin/helper/functions/date_time.dart';
-import 'package:apl_admin/helper/widgets/future_builder.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
-import 'package:apl_admin/helper/widgets/text.dart';
-import 'package:apl_admin/requests/season.dart';
+import 'package:apl_admin/util/date_time.dart';
+import 'package:apl_admin/widgets/card.dart';
+import 'package:apl_admin/widgets/future_builder.dart';
+import 'package:apl_admin/widgets/text.dart';
+import 'package:apl_admin/controllers/season.dart';
 import 'package:flutter/material.dart';
 import 'create_match.dart';
 
@@ -66,7 +66,7 @@ class MatchesState extends State<Matches> {
                 return ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, index) {
-                    return Fixture(
+                    return FixtureCard(
                       fixture: data[index],
                     );
                   },

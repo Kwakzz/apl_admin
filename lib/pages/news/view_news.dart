@@ -1,4 +1,4 @@
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
+import 'package:apl_admin/widgets/news_item.dart';
 import 'package:flutter/material.dart';
 
 class ViewNews extends StatefulWidget {

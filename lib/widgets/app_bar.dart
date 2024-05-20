@@ -5,7 +5,7 @@ import 'text.dart';
 
 
 // ignore: must_be_immutable
-class RegularAppBar extends StatelessWidget implements PreferredSizeWidget {
+class AppBarWithPrevButton extends StatelessWidget implements PreferredSizeWidget {
   
   @override
   Size get preferredSize => const Size.fromHeight(60);
@@ -14,8 +14,7 @@ class RegularAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final BuildContext prevContext;
 
-  /// Creates a customized app bar with a back button.
-  RegularAppBar(
+  AppBarWithPrevButton(
     {
       super.key, 
       required this.prevContext,
@@ -51,15 +50,13 @@ class RegularAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 
-/// Creates a customized app bar without a back button.
-class RegularAppBarNoBack extends StatelessWidget implements PreferredSizeWidget {
+class AppBarWithNoPrevButton extends StatelessWidget implements PreferredSizeWidget {
   
   @override
   Size get preferredSize => const Size.fromHeight(60);
   final String title;
 
-  /// Creates a customized app bar without a back button.
-  const RegularAppBarNoBack(
+  const AppBarWithNoPrevButton(
     {
       super.key, 
       required this.title,
@@ -80,11 +77,9 @@ class RegularAppBarNoBack extends StatelessWidget implements PreferredSizeWidget
 }
 
 
-/// Creates a customized app bar for the latest page. It contains "Ashesi Premier League" text on a red background.
-class APLAppBar extends StatelessWidget implements PreferredSizeWidget {
+class AppBarWithAPLLogo extends StatelessWidget implements PreferredSizeWidget {
 
-  /// Creates a customized app bar for the latest page. It contains "Ashesi Premier League" text on a red background.
-  const APLAppBar(
+  const AppBarWithAPLLogo(
     {
       super.key, 
     }

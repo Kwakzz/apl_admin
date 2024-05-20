@@ -1,11 +1,12 @@
-import 'package:apl_admin/helper/widgets/app_bar.dart';
-import 'package:apl_admin/helper/widgets/dialog_box.dart';
-import 'package:apl_admin/helper/widgets/form.dart';
-import 'package:apl_admin/helper/widgets/future_builder.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
-import 'package:apl_admin/helper/widgets/text.dart';
-import 'package:apl_admin/requests/season.dart';
-import 'package:apl_admin/requests/standings.dart';
+import 'package:apl_admin/widgets/app_bar.dart';
+import 'package:apl_admin/widgets/dialog_box.dart';
+import 'package:apl_admin/widgets/form.dart';
+import 'package:apl_admin/widgets/future_builder.dart';
+import 'package:apl_admin/widgets/list_tile.dart';
+import 'package:apl_admin/widgets/rankings.dart';
+import 'package:apl_admin/widgets/text.dart';
+import 'package:apl_admin/controllers/season.dart';
+import 'package:apl_admin/controllers/standings.dart';
 import 'package:flutter/material.dart';
 
 
@@ -149,7 +150,7 @@ class ViewStandingsState extends State<ViewStandings> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: RegularAppBar(
+        appBar: AppBarWithPrevButton(
           prevContext: context,
           title: "View Standings",
         ),

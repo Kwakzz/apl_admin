@@ -1,7 +1,7 @@
-import 'package:apl_admin/helper/widgets/future_builder.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
-import 'package:apl_admin/helper/widgets/text.dart';
-import 'package:apl_admin/requests/match_event.dart';
+import 'package:apl_admin/widgets/future_builder.dart';
+import 'package:apl_admin/widgets/list_tile.dart';
+import 'package:apl_admin/widgets/text.dart';
+import 'package:apl_admin/controllers/match_event.dart';
 import 'package:flutter/material.dart';
 
 class ViewMatchEvents extends StatefulWidget {

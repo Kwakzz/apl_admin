@@ -1,7 +1,7 @@
-import 'package:apl_admin/helper/widgets/app_bar.dart';
-import 'package:apl_admin/helper/widgets/dialog_box.dart';
-import 'package:apl_admin/helper/widgets/form.dart';
-import 'package:apl_admin/requests/news.dart';
+import 'package:apl_admin/widgets/app_bar.dart';
+import 'package:apl_admin/widgets/dialog_box.dart';
+import 'package:apl_admin/widgets/form.dart';
+import 'package:apl_admin/controllers/news.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
@@ -71,7 +71,7 @@ class CreateNewsItemState extends State<CreateNewsItem> {
     
 
     return Scaffold(
-      appBar: const RegularAppBarNoBack(
+      appBar: const AppBarWithNoPrevButton(
         title: "Create News Item",
       ),
 

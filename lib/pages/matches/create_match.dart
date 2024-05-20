@@ -1,10 +1,10 @@
-import 'package:apl_admin/helper/functions/validate.dart';
-import 'package:apl_admin/helper/widgets/app_bar.dart';
-import 'package:apl_admin/helper/widgets/dialog_box.dart';
-import 'package:apl_admin/helper/widgets/form.dart';
-import 'package:apl_admin/requests/referee.dart';
-import 'package:apl_admin/requests/season.dart';
-import 'package:apl_admin/requests/teams.dart';
+import 'package:apl_admin/util/validate.dart';
+import 'package:apl_admin/widgets/app_bar.dart';
+import 'package:apl_admin/widgets/dialog_box.dart';
+import 'package:apl_admin/widgets/form.dart';
+import 'package:apl_admin/controllers/referee.dart';
+import 'package:apl_admin/controllers/season.dart';
+import 'package:apl_admin/controllers/teams.dart';
 import 'package:flutter/material.dart';
 
 class CreateMatch extends StatefulWidget {
@@ -30,6 +30,7 @@ class CreateMatchState extends State<CreateMatch> {
   int _selectedRefereeId = 0;
   int _selectedCompetitionId = 0;
   int _selectedStageId = 0;
+  // ignore: prefer_final_fields
   TimeOfDay _selectedMatchTime = TimeOfDay.now();
 
   final TextEditingController _matchTimeController = TextEditingController();
@@ -108,7 +109,7 @@ class CreateMatchState extends State<CreateMatch> {
     
 
     return Scaffold(
-      appBar: RegularAppBarNoBack(
+      appBar: AppBarWithNoPrevButton(
         title: "Create Match (Matchday ${widget.matchday['number'].toString()})",
       ),
 

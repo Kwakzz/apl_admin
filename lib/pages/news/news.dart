@@ -1,7 +1,8 @@
-import 'package:apl_admin/helper/widgets/future_builder.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
+import 'package:apl_admin/widgets/future_builder.dart';
 import 'package:apl_admin/pages/news/create_news.dart';
-import 'package:apl_admin/requests/news.dart';
+import 'package:apl_admin/controllers/news.dart';
+import 'package:apl_admin/widgets/list_tile.dart';
+import 'package:apl_admin/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class News extends StatefulWidget {

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-/// This button is displayed in on the "More" tab's page when a user isn't logged in. It contains the words, "Register/Sign In". It navigates the user to the Register/Sign In page.
 class JoinUsButton extends StatelessWidget {
 
-  /// This button is displayed in on the "More" tab's page when a user isn't logged in. It contains the words, "Register/Sign In". It navigates the user to the Register/Sign In page.
   const JoinUsButton({
     super.key,
     required this.onPressed,
@@ -43,10 +41,8 @@ class JoinUsButton extends StatelessWidget {
 }
 
 
-/// When you click on the add button, it takes you to a form where you can add a new player, season, fixture, etc.
 class AddButton extends StatelessWidget {
 
-  /// When you click on the add button, it takes you to a form where you can add a new player, season, fixture, etc.
   const AddButton({
     super.key,
     required this.onPressed,

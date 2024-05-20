@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:apl_admin/helper/functions/string.dart';
-import 'package:apl_admin/helper/functions/validate.dart';
-import 'package:apl_admin/helper/widgets/app_bar.dart';
-import 'package:apl_admin/helper/widgets/dialog_box.dart';
-import 'package:apl_admin/helper/widgets/form.dart';
+import 'package:apl_admin/util/string.dart';
+import 'package:apl_admin/util/validate.dart';
+import 'package:apl_admin/widgets/app_bar.dart';
+import 'package:apl_admin/widgets/dialog_box.dart';
+import 'package:apl_admin/widgets/form.dart';
 import 'package:apl_admin/pages/home.dart';
-import 'package:apl_admin/requests/players.dart';
+import 'package:apl_admin/controllers/players.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -95,7 +95,7 @@ class EditPlayerState extends State<EditPlayer> {
     
 
     return Scaffold(
-      appBar: const RegularAppBarNoBack(
+      appBar: const AppBarWithNoPrevButton(
         title: "Edit Player",
       ),
 

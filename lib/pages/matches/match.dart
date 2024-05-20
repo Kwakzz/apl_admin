@@ -1,9 +1,9 @@
-import 'package:apl_admin/helper/widgets/dialog_box.dart';
-import 'package:apl_admin/helper/widgets/form.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
-import 'package:apl_admin/helper/widgets/text.dart';
-import 'package:apl_admin/requests/season.dart';
-import 'package:apl_admin/requests/teams.dart';
+import 'package:apl_admin/widgets/card.dart';
+import 'package:apl_admin/widgets/dialog_box.dart';
+import 'package:apl_admin/widgets/form.dart';
+import 'package:apl_admin/widgets/text.dart';
+import 'package:apl_admin/controllers/season.dart';
+import 'package:apl_admin/controllers/teams.dart';
 import 'package:flutter/material.dart';
 
 import 'view_match_events.dart';
@@ -26,6 +26,7 @@ class MatchState extends State<Match> {
 
   List<Map<String, dynamic>> _homePlayers = [];
   List<Map<String, dynamic>> _awayPlayers = [];
+  // ignore: prefer_final_fields
   TextEditingController _minuteController = TextEditingController();
 
 
@@ -71,7 +72,7 @@ class MatchState extends State<Match> {
           body: ListView(
             children: [
 
-              Fixture(
+              FixtureCard(
                 fixture: widget.match
               ),
 
@@ -121,7 +122,7 @@ class MatchState extends State<Match> {
           body: ListView(
             children: [
 
-              Result(
+              MatchResultCard(
                 result: widget.match
               ),
 
@@ -162,7 +163,7 @@ class MatchState extends State<Match> {
                         showDialog(
                           context: context, 
                           builder: (BuildContext context) {
-                            return GoalDialogBox(
+                            return CreateGoalDialogBox(
                               players: _homePlayers,
                               match: widget.match,
                               minuteController: _minuteController,
@@ -179,7 +180,7 @@ class MatchState extends State<Match> {
                         showDialog(
                           context: context, 
                           builder: (BuildContext context) {
-                            return GoalDialogBox(
+                            return CreateGoalDialogBox(
                               players: _awayPlayers,
                               match: widget.match,
                               scoringTeam: widget.match['away_team'],
@@ -209,7 +210,7 @@ class MatchState extends State<Match> {
                         showDialog(
                           context: context, 
                           builder: (BuildContext context) {
-                            return BookingDialogBox(
+                            return CreateBookingDialogBox(
                               players: _homePlayers,
                               match: widget.match,
                               minuteController: _minuteController,
@@ -226,7 +227,7 @@ class MatchState extends State<Match> {
                         showDialog(
                           context: context, 
                           builder: (BuildContext context) {
-                            return BookingDialogBox(
+                            return CreateBookingDialogBox(
                               players: _awayPlayers,
                               match: widget.match,
                               minuteController: _minuteController,
@@ -311,7 +312,7 @@ class MatchState extends State<Match> {
         body: ListView(
           children: [
 
-            Result(
+            MatchResultCard(
               result: widget.match
             ),
 

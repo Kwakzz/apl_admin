@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:apl_admin/requests/delete.dart';
-import 'package:apl_admin/requests/post.dart';
+import 'package:apl_admin/controllers/delete.dart';
+import 'package:apl_admin/controllers/post.dart';
 
 import 'get.dart';
 

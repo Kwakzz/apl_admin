@@ -1,5 +1,6 @@
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
-import 'package:apl_admin/helper/widgets/text.dart';
+import 'package:apl_admin/widgets/card.dart';
+import 'package:apl_admin/widgets/list_tile.dart';
+import 'package:apl_admin/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 
@@ -28,7 +29,7 @@ class ViewPlayerState extends State<ViewPlayer> {
     return ListView(
       children: [
 
-        PlayerRectangle(player: widget.player),
+        PlayerCard(player: widget.player),
 
         const SizedBox(height: 20),
 

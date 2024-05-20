@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:apl_admin/requests/patch.dart';
+import 'package:apl_admin/controllers/patch.dart';
 
 import 'delete.dart';
 import 'get.dart';

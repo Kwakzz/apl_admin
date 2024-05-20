@@ -1,7 +1,8 @@
-import 'package:apl_admin/helper/widgets/future_builder.dart';
-import 'package:apl_admin/helper/widgets/menu_widgets.dart';
+import 'package:apl_admin/widgets/future_builder.dart';
+import 'package:apl_admin/widgets/list_tile.dart';
 import 'package:apl_admin/pages/players/create_player.dart';
-import 'package:apl_admin/requests/players.dart';
+import 'package:apl_admin/controllers/players.dart';
+import 'package:apl_admin/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class Players extends StatefulWidget {

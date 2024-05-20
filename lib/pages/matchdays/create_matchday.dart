@@ -1,8 +1,8 @@
-import 'package:apl_admin/helper/functions/validate.dart';
-import 'package:apl_admin/helper/widgets/app_bar.dart';
-import 'package:apl_admin/helper/widgets/dialog_box.dart';
-import 'package:apl_admin/helper/widgets/form.dart';
-import 'package:apl_admin/requests/season.dart';
+import 'package:apl_admin/util/validate.dart';
+import 'package:apl_admin/widgets/app_bar.dart';
+import 'package:apl_admin/widgets/dialog_box.dart';
+import 'package:apl_admin/widgets/form.dart';
+import 'package:apl_admin/controllers/season.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -61,7 +61,7 @@ class CreateMatchDayState extends State<CreateMatchDay> {
     
 
     return Scaffold(
-      appBar: RegularAppBarNoBack(
+      appBar: AppBarWithNoPrevButton(
         title: "Create Match Day (${widget.season['name']})",
       ),
 
